@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Farmer Procurement System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stage">
+  <div class="intro">
+    <span class="eyebrow">SMART FARMER PROJECT</span>
+    <h1>Smart Farmer Procurement System</h1>
+    <p>Farmers can register, submit crop details, book procurement slots and track digital tokens.</p>
+    <span class="tag">🌾 Team Code Warriors</span>
+  </div>
+
+  <div class="phone">
+    <div class="screen">
+      <div class="status-bar">
+        <span id="clock">Loading...</span>
+        <span>🌱 Krishi Sahayak</span>
+      </div>
+
+      <div class="view-wrap">
+        <section class="view active" id="view-register">
+          <div class="view-header">
+            <span class="eyebrow">STEP 1</span>
+            <h2>Farmer Registration</h2>
+            <p>Create your farmer profile.</p>
+          </div>
+
+          <div class="field">
+            <label>Full Name</label>
+            <input id="reg-name" type="text" placeholder="Enter full name">
+          </div>
+          <div class="field">
+            <label>Mobile Number</label>
+            <input id="reg-mobile" type="tel" maxlength="10"
+                   inputmode="numeric" placeholder="10-digit mobile number">
+          </div>
+          <div class="field">
+            <label>Village / District</label>
+            <input id="reg-village" type="text" placeholder="Enter village">
+          </div>
+          <div class="field">
+            <label>Preferred Language</label>
+            <select id="reg-lang">
+              <option>English</option>
+              <option>Hindi</option>
+              <option>Marathi</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="registerFarmer()">
+            Create Profile →
+          </button>
+        </section>
+
+        <section class="view" id="view-home">
+          <div class="view-header">
+            <span class="eyebrow">WELCOME</span>
+            <h2 id="home-greeting">Farmer</h2>
+            <p id="home-greeting-tag">Your procurement dashboard.</p>
+          </div>
+
+          <div class="grid4">
+            <button class="quick-tile" onclick="goTo('crops')">
+              <span class="ic">🌾</span><span class="lbl">Crop Details</span>
+            </button>
+            <button class="quick-tile" onclick="goTo('schedule')">
+              <span class="ic">📅</span><span class="lbl">Schedule</span>
+            </button>
+            <button class="quick-tile" onclick="goTo('status')">
+              <span class="ic">📍</span><span class="lbl">Track Status</span>
+            </button>
+            <button class="quick-tile" onclick="goTo('notifications')">
+              <span class="ic">🔔</span><span class="lbl">Notifications</span>
+            </button>
+          </div>
+
+          <div class="card leaf">
+            <div class="field-label">NEXT PROCUREMENT</div>
+            <div id="next-proc-body">
+              No slot booked yet. Visit the Schedule page to book one.
+            </div>
+          </div>
+
+          <div class="section-title">Application Progress</div>
+          <div class="card">
+            <div class="journey" id="home-journey"></div>
+          </div>
+
+          <div class="section-title">Procurement Centers</div>
+          <div class="card">
+            <div class="row">
+              <div class="row-ic">🏢</div>
+              <div class="row-main">
+                <div class="row-title">APMC Market, Pune</div>
+                <div class="row-sub">Wheat, Onion, Soybean</div>
+              </div>
+              <span class="badge green">Open</span>
+            </div>
+            <div class="row">
+              <div class="row-ic">🏢</div>
+              <div class="row-main">
+                <div class="row-title">Baramati Center</div>
+                <div class="row-sub">Onion, Grapes</div>
+              </div>
+              <span class="badge green">Open</span>
+            </div>
+            <button class="btn btn-outline" onclick="goTo('centers')">
+              View All Centers
+            </button>
+          </div>
+        </section>
+
+        <section class="view" id="view-crops">
+          <div class="view-header">
+            <span class="eyebrow">CROP DETAILS</span>
+            <h2>Submit Crop Details</h2>
+            <p>Add the crop you want to sell.</p>
+          </div>
+
+          <div class="card">
+            <div class="field">
+              <label>Crop Type</label>
+              <select id="crop-type">
+                <option>Wheat</option>
+                <option>Onion</option>
+                <option>Soybean</option>
+                <option>Cotton</option>
+                <option>Grapes</option>
+                <option>Rice</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Quantity (Quintal)</label>
+              <input id="crop-qty" type="number" min="1" step="0.1"
+                     placeholder="Enter quantity">
+            </div>
+            <div class="field">
+              <label>Quality Grade</label>
+              <select id="crop-grade">
+                <option>Grade A</option>
+                <option>Grade B</option>
+                <option>Grade C</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="addCrop()">
+              Submit Crop Details
+            </button>
+          </div>
+
+          <div class="section-title">Your Submitted Crops</div>
+          <div class="card" id="crop-list">
+            <div class="empty">🌱 No crops submitted yet.</div>
+          </div>
+        </section>
+
+        <section class="view" id="view-schedule">
+          <div class="view-header">
+            <span class="eyebrow">PROCUREMENT SCHEDULE</span>
+            <h2>Book a Slot</h2>
+            <p>Choose a procurement date and center.</p>
+          </div>
+          <div class="card" id="schedule-list"></div>
+        </section>
+
+        <section class="view" id="view-status">
+          <div class="view-header">
+            <span class="eyebrow">TRACK STATUS</span>
+            <h2>Your Procurement Journey</h2>
+            <p>Track your booking and digital token.</p>
+          </div>
+          <div id="status-body"></div>
+        </section>
+
+        <section class="view" id="view-notifications">
+          <div class="view-header">
+            <span class="eyebrow">NOTIFICATIONS</span>
+            <h2>Updates & Alerts</h2>
+            <p>See your latest application updates.</p>
+          </div>
+          <div class="card" id="notif-list">
+            <div class="empty">🔔 No notifications yet.</div>
+          </div>
+        </section>
+
+        <section class="view" id="view-centers">
+          <div class="view-header">
+            <span class="eyebrow">LOCATIONS</span>
+            <h2>Procurement Centers</h2>
+          </div>
+          <div class="card">
+            <div class="row">
+              <div class="row-ic">🏢</div>
+              <div class="row-main">
+                <div class="row-title">APMC Market, Pune</div>
+                <div class="row-sub">Wheat, Onion, Soybean</div>
+              </div>
+              <span class="badge green">Open</span>
+            </div>
+            <div class="row">
+              <div class="row-ic">🏢</div>
+              <div class="row-main">
+                <div class="row-title">Baramati Procurement Center</div>
+                <div class="row-sub">Onion, Grapes</div>
+              </div>
+              <span class="badge green">Open</span>
+            </div>
+            <div class="row">
+              <div class="row-ic">🏢</div>
+              <div class="row-main">
+                <div class="row-title">Indapur Mandi</div>
+                <div class="row-sub">Cotton, Rice</div>
+              </div>
+              <span class="badge gold">Closes 5 PM</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-profile">
+          <div class="view-header">
+            <span class="eyebrow">PROFILE</span>
+            <h2>Your Account</h2>
+          </div>
+          <div class="card" id="profile-card"></div>
+          <button class="btn btn-outline" onclick="goTo('centers')">
+            View Procurement Centers
+          </button>
+          <button class="btn btn-ghost" onclick="logout()">
+            Back to Registration
+          </button>
+        </section>
+      </div>
+
+      <div class="toast" id="toast" role="status"></div>
+
+      <div class="bottom-nav" id="bottom-nav" style="display:none">
+        <button class="nav-btn" data-nav="home" onclick="goTo('home')">
+          <span class="nic">🏠</span><span class="nlbl">Home</span>
+        </button>
+        <button class="nav-btn" data-nav="crops" onclick="goTo('crops')">
+          <span class="nic">🌾</span><span class="nlbl">Crops</span>
+        </button>
+        <button class="nav-btn" data-nav="schedule" onclick="goTo('schedule')">
+          <span class="nic">📅</span><span class="nlbl">Schedule</span>
+        </button>
+        <button class="nav-btn" data-nav="status" onclick="goTo('status')">
+          <span class="nic">📍</span><span class="nlbl">Status</span>
+        </button>
+        <button class="nav-btn" data-nav="profile" onclick="goTo('profile')">
+          <span class="nic">👤</span><span class="nlbl">Profile</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js" defer></script>
+</body>
+</html>
